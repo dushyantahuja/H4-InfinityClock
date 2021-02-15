@@ -1,6 +1,6 @@
 #define NUM_LEDS 60
 #define DATA_PIN 4
-#define UPDATES_PER_SECOND 40
+#define UPDATES_PER_SECOND 10
 #define GET_VARIABLE_NAME(Variable) (#Variable).cstr()
 #define ESPNAME "INFINITY-0001"
 

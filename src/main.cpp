@@ -18,7 +18,7 @@
 void onWiFiConnect( void );
 void onWiFiDisconnect( void );
 
-H4_USE_PLUGINS(115200,H4_Q_CAPACITY,false) // Serial baud rate, Q size, SerialCmd autostop
+H4_USE_PLUGINS(115200,H4_Q_CAPACITY,true) // Serial baud rate, Q size, SerialCmd autostop
 
 H4P_WiFi h4wifi("DUSHYANT", "ahuja987", "NTPClock", onWiFiConnect, onWiFiDisconnect);  // Configure and actyivate the WiFi Interface.
 H4P_Timekeeper h4tk(NTP1, NTP2, LocalTZO);  // Time support.
@@ -138,8 +138,17 @@ void effects()
 void h4setup( void ) {
   saveDefaults();
    //**** Activate a task to display the time.
-  h4.every(25, [](){ 
-    ShowTime();
-    FastLED.show();
+  /*h4.every(1000/UPDATES_PER_SECOND, [](){ 
+    if(ClockValid){
+      ShowTime();
+      FastLED.show();
+    }
+  });*/
+  h4.every(2000,[](){
+    if(WiFiValid)
+      Serial.println("Wifi Connected");
+    else Serial.println("Wifi Not Connected");
+    if(ClockValid)
+      Serial.printf(  "Local Time: %d = %s\n", h4tk.clockEPOCHLocal(), CSTR(h4tk.strfDateTime( "%a %Y-%m-%d %H:%M:%S", h4tk.clockEPOCHLocal() )) );
   });
 }
